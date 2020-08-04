@@ -36,7 +36,7 @@
           <form action="{% url 'backlog_tracker_app:add_backlog' search_result.id %}" method="post"> 
              {% csrf_token %}
              <button 
-               class="btn btn-primary" type="submit" name='show' value={{ search_result }}>Add to backlog</button>
+               class="btn btn-primary" type="submit" name='show'>Add to backlog</button>
           </form>
         </div>
         <div class="col-6 col-xs-12">
