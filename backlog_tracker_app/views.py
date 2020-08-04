@@ -147,6 +147,8 @@ def add_backlog(request, show_id=1):
         episodes = requests.get('http://api.tvmaze.com/shows/{}/episodes'.format(show_id))
         episodes = episodes.json()
 
+        messages.success(request, "You have added {} to your backlog successfully".format(show['name']))
+
         #add to database
         ShowBacklog.objects.create(name=show['name'], genre=show['genres'], summary=show['summary'], 
             release_date=show['premiered'], image_url=show['image']['medium'], 
