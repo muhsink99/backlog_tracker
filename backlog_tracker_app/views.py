@@ -9,6 +9,9 @@ from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
 
+import json
+from demjson import decode
+
 import requests
 # Create your views here.
 
@@ -29,7 +32,6 @@ def signup(request):
         user_form = UserForm(data=request.POST)
 
         if user_form.is_valid(): 
-
             user = user_form.save() 
             user.set_password(user.password) 
             user.save() 
@@ -101,7 +103,7 @@ def show(request, show_id=0):
     search_result = requests.get('http://api.tvmaze.com/shows/{}?embed=episodes'.format(show_id))
     search_result = search_result.json() # convert to readable json format
 
-    #TODO: Remove this shit
+    #TODO: Remove this
     episodes = requests.get('http://api.tvmaze.com/shows/{}/episodes'.format(show_id))
     episodes = episodes.json()
 
@@ -130,16 +132,38 @@ def update_account(request):
     return render(request, 'user/update-account.html', context={})
 
 def backlog(request): 
-    return render(request, 'user/backlog.html', context={})
+    shows = ShowBacklog.objects.filter(user=request.user)
+
+    return render(request, 'user/backlog.html', context={'shows': shows})
 
 @login_required
 def add_backlog(request, show_id=1): 
     if request.method == "POST": 
-        show = request.POST.get('show') 
-        print(show)
+        #TODO: remove these api calls if possible
+        show = requests.get('http://api.tvmaze.com/shows/{}?embed=episodes'.format(show_id))
+        show = show.json() # convert to readable json format
 
-        # add to database
-        
+        episodes = requests.get('http://api.tvmaze.com/shows/{}/episodes'.format(show_id))
+        episodes = episodes.json()
+
+        #add to database
+        ShowBacklog.objects.create(name=show['name'], genre=show['genres'], summary=show['summary'], 
+            release_date=show['premiered'], image_url=show['image']['medium'], 
+                max_episodes=len(episodes), user=request.user)
+
         return HttpResponseRedirect(reverse('backlog_tracker_app:show', args=[show_id]))
     
     return HttpResponseRedirect(reverse('backlog_tracker_app:show', args=[show_id]))
+
+@login_required
+def update_backlog(request, show_id=1): 
+    if request.method == "POST": 
+        current_episode = request.POST.get('current-episode')
+        updating_show = ShowBacklog.objects.get(user=request.user, id=show_id)
+
+        updating_show.current_episode = current_episode
+        updating_show.save() 
+
+        return HttpResponseRedirect(reverse('backlog_tracker_app:backlog'))
+        
+    return HttpResponseRedirect(reverse('backlog_tracker_app:backlog'))

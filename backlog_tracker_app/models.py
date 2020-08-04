@@ -13,6 +13,12 @@ class ShowBacklog(models.Model):
     genre = models.CharField(max_length=100) 
     summary = models.TextField() 
     release_date = models.DateField() 
+    image_url = models.CharField(max_length=100, default='') 
+
+    current_episode = models.IntegerField(default=0) 
+    max_episodes = models.IntegerField(default=0) 
+
+    user_rating = models.IntegerField(default=0)
 
     #Many-to-one relationship to 'User' table
     user = models.ForeignKey(User, on_delete=models.CASCADE)

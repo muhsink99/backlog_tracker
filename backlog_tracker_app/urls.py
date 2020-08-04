@@ -13,5 +13,6 @@ urlpatterns = [
     path('show/<int:show_id>/', views.show, name='show'), 
     path('update_account/', views.update_account, name='update_account'), 
     path('backlog/', views.backlog, name='backlog'), 
-    path('add_backlog/<int:show_id>/', views.add_backlog, name='add_backlog')
+    path('add_backlog/<int:show_id>/', views.add_backlog, name='add_backlog'), 
+    path('update_backlog/<int:show_id>/', views.update_backlog, name='update_backlog')
 ]
