@@ -8,6 +8,7 @@ from django.contrib.auth import authenticate, login, logout
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.contrib.auth.decorators import login_required
+from django.contrib import messages
 
 import json
 from demjson import decode
@@ -163,6 +164,21 @@ def update_backlog(request, show_id=1):
 
         updating_show.current_episode = current_episode
         updating_show.save() 
+
+        messages.success(request, "You have updated your progress with {} successfully".format(updating_show.name))
+
+        return HttpResponseRedirect(reverse('backlog_tracker_app:backlog'))
+        
+    return HttpResponseRedirect(reverse('backlog_tracker_app:backlog'))
+
+@login_required
+def remove_backlog(request, show_id=1): 
+    if request.method == "POST": 
+        removing_show = ShowBacklog.objects.get(user=request.user, id=show_id)
+
+        messages.success(request, "You have removed {} from your backlog successfully".format(removing_show.name))
+
+        removing_show.delete() 
 
         return HttpResponseRedirect(reverse('backlog_tracker_app:backlog'))
         

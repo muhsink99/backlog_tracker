@@ -14,5 +14,6 @@ urlpatterns = [
     path('update_account/', views.update_account, name='update_account'), 
     path('backlog/', views.backlog, name='backlog'), 
     path('add_backlog/<int:show_id>/', views.add_backlog, name='add_backlog'), 
-    path('update_backlog/<int:show_id>/', views.update_backlog, name='update_backlog')
+    path('update_backlog/<int:show_id>/', views.update_backlog, name='update_backlog'),
+    path('remove_backlog/<int:show_id>/', views.remove_backlog, name='remove_backlog'),
 ]

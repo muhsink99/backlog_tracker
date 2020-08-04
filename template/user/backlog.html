@@ -3,6 +3,16 @@
 
 {% load app_filters %}
 {% block body_block %}
+{% if messages %}
+    {% for message in messages %}
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+             {{ message}}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+               <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endfor %}
+{% endif %}
 <h1>Backlog </h1>
 {% if shows %}
     {% for show in shows %}
@@ -23,6 +33,8 @@
                                     class="form-control"
                                     name="current-episode"
                                     value={{ show.current_episode }}
+                                    min="0"
+                                    max="{{ show.max_episodes }}"
                                 />  
                                 / {{ show.max_episodes }}
                         </div>  
@@ -34,11 +46,34 @@
                 <button class="btn btn-primary"> 
                     Visit show page
                 </button> 
-                <button class="btn btn-danger"> 
+                <button class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{show.id}}"> 
                     Remove from backlog
                 </button> 
             </div>
         </div> 
+        <!-- Modal for deleting a show -->
+        <div class="modal fade" id="deleteModal{{show.id}}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel{{show.id}}" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="deleteModalLabel{{show.id}}">Remove {{show.name}} from your backlog</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                Are you sure? This action <strong> cannot be reversed</strong>!
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                <form method="post" action="{% url 'backlog_tracker_app:remove_backlog' show.id %}">
+                    {% csrf_token %}
+                    <button type="submit" class="btn btn-danger">Remove</button>
+                </form>
+            </div>
+            </div>
+        </div>
+        </div>
         <lr/>
     {% endfor %}
 {% else %}
