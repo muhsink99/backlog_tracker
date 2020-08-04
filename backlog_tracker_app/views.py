@@ -74,7 +74,7 @@ def user_login(request):
             print('Someone tried to login and failed! Account does not exist')
             return render(request, 'user/login.html', context ={
                     'errors': [
-                        'Account does not exist.'
+                        'Some of the information was not valid.'
                     ]
                 })
 
@@ -109,6 +109,24 @@ def show(request, show_id=0):
 
 @login_required
 def update_account(request): 
+    if request.method == "POST": 
+        new_password = request.POST.get('password')
+        new_confirm_password = request.POST.get('confirm-password')
+
+        if new_password == new_confirm_password: 
+            current_user = request.user 
+
+            current_user.set_password(new_password) 
+            current_user.save()
+
+            return render(request, 'user/update-account.html', context={'success_message': 'You have successfully changed your password'})
+        else: 
+            return render(request, 'user/update-account.html', context ={
+                    'errors': [
+                        'The passwords do not match.'
+                    ]
+                })
+
     return render(request, 'user/update-account.html', context={})
 
 def backlog(request): 
