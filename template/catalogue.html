@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+{% extends "base.html" %} 
+{% load static %}{% block body_block %}
+<div class="container">
+  <h1>Catalogue </h1>
+  <form action="{% url 'backlog_tracker_app:catalogue' %}" method="post">
+    {% csrf_token %}
+    <!-- Search / filter components -->
+    <div class="row catalogue-components"> 
+      <div class="col-sm"> 
+        <input
+        type="text"
+        class="form-control search-bar"
+        name="search-query"
+        placeholder="Search for a show"
+        />
+      </div> 
+      <div class="col-sm"> 
+        <button class="btn btn-primary search-button" type="submit">Search</button>
+      </div> 
+      <div class="row-sm">
+        <div class="btn-group" role="group"> 
+          <a class="btn btn-default" href="#">
+            <i class="fa fa-list" title="Align Left"></i>
+          </a>
+          <a class="btn btn-default" href="#">
+            <i class="fas fa-th" title="Align Center"></i>
+          </a>
+        </div> 
+      </div> 
+      </div>
+      <div class="row catalogue-components"> 
+        <div class="col-sm">
+          Sort by:
+          <div class="btn-group">
+            <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+              Nothing
+            </button>
+            <div class="dropdown-menu">
+              <a class="dropdown-item" href="#">Something goes here</a>
+            </div>
+          </div>
+        </div> 
+      </div>
+  </form>
+  <!-- End of search/filter components -->
+    <br />
+    <!-- All search results -->
+    <div class="container"> 
+      <div class="row"> 
+        {% for result in search_results %} 
+          <div class="col-lg-4 xs-6"> 
+            <div class="show-card"> 
+              <div class="col"> 
+                <img src="{{ result.show.image.medium }}" 
+                  alt="{% static 'images/placeholder-icon.png' %}"
+                  class="movie-image" />
+              </div> 
+              <div class="col"> 
+                <strong> {{ result.show.name }} </strong>
+              </div> 
+              <div class="col"> 
+                {{ result.show.premiered }} 
+              </div> 
+              <div class="col"> 
+                  <a class="btn btn-warning" href="{% url 'backlog_tracker_app:show' result.show.id %}">
+                    <i class="fa fa-file"></i>More info</a>
+              </div> 
+            </div> 
+          </div> 
+        {% endfor %}
+      </div>
+    </div> 
+  </div>
+</div>
+{% endblock %}

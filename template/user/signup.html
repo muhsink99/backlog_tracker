@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+{% extends 'base.html' %} {% block body_block %}
+<div class="container container-form">
+  {% if signed_up %}
+  <h1>Thanks for signing up!</h1>
+  {% else%}
+  <h3>Sign up</h3>
+  <hr />
+  <form enctype="multipart/form-data" method="post">
+    {{ user_form.as_p }} {% csrf_token %}
+    <button class="btn btn-primary" type="submit" name="" value="Login">
+      Sign up!
+    </button>
+  </form>
+  <hr />
+  <footer>
+    Already have an account?
+    <span
+      ><a href="{% url 'backlog_tracker_app:user_login' %}">
+        Sign in here</a
+      ></span
+    >
+  </footer>
+</div>
+
+{% endif %} {% endblock %}

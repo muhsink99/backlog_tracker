@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+{% extends "base.html" %} 
+{% load app_filters %}
+{% block body_block %}
+<div class="container"> 
+    <a href={% url 'backlog_tracker_app:catalogue' %}>Go back to Catalogue </a>
+    <div class="row"> 
+        <div class="col-lg-6 col-xs-12"> 
+          <h2>{{ search_result.name }}</h2>
+          <img src={{search_result.network.country.code|country_icon_url }} />
+          <strong> Release date: </strong>{{ search_result.premiered }}
+          <br/>
+          <strong> Genre: </strong> 
+          {% for genre in search_result.genres %}
+            {{ genre }}, 
+          {% endfor %}
+          <br/>
+          <strong> Status: </strong>  
+          {{ search_result.status }}
+          <br/>
+          <strong> Network: </strong> 
+          {{ search_result.network.name }}
+          <br/>
+          <strong> Rating: </strong> 
+          {{ search_result.rating.average }} / 10
+          <br/>
+          <strong> Schedule: </strong> 
+          {% for day in search_result.schedule.days %}
+          {{ day }}, 
+          {% endfor %}
+          @ {{ search_result.schedule.time }}
+          <br/>
+          <img src="{{ search_result.image.medium}}"
+            class="movie-image" />
+          <br/> 
+          <form action="{% url 'backlog_tracker_app:add_backlog' search_result.id %}" method="post"> 
+             {% csrf_token %}
+             <button 
+               class="btn btn-primary" type="submit" name='show' value='{{ search_result }}'>Add to backlog</button>
+          </form>
+        </div>
+        <div class="col-6 col-xs-12">
+            <h5> Summary </h5>
+            <p>{{ search_result.summary|remove_html_tags }}</p> 
+            <div id="accordion">
+                <div class="card">
+                <div class="card-header" id="episodesHeading">
+                <h5 class="mb-0">
+                    <button class="btn btn-link" data-toggle="collapse" data-target="#episodeCollapse" aria-expanded="true" aria-controls="episodeCollapse">
+                    Episodes
+                    </button>
+                </h5>
+                </div>
+
+                <div id="episodeCollapse" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div class="card-body">
+                    {% for episode in episodes %}
+                        <div class="row episode-row"> 
+                            <div class="col-2">
+                                <h4> {{ episode.number }} </h4>
+                            </div> 
+                            <div class="col-6"> 
+                                <strong> {{ episode.name }} </strong> 
+                                <br/> 
+                                <details>
+                                    <summary> Reveal spoilers </summary> 
+                                    <p> {{ episode.summary|remove_html_tags }} </p>
+                                </details> 
+                            </div> 
+                            <div class="col-4"> 
+                                <strong> Air date: </strong> {{ episode.airdate }}, {{ episode.airtime }}
+                                <br/> 
+                                <strong> Runtime: </strong> {{ episode.runtime }} minutes
+                            </div> 
+                        </div> 
+                        <hr/>
+                    {% endfor %}
+                </div>
+                </div>
+            </div>
+            <br/>
+        </div>  
+    </div> 
+</div> 
+{% endblock %}
