@@ -17,6 +17,34 @@
       src="https://kit.fontawesome.com/fdab00e3ae.js"
       crossorigin="anonymous"
     ></script>
+
+    <link
+      rel="stylesheet"
+      type="text/css"
+      href="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.css"
+    />
+    <script
+      src="https://cdn.wpcc.io/lib/1.0.2/cookieconsent.min.js"
+      defer
+    ></script>
+    <script>
+      window.addEventListener("load", function () {
+        window.wpcc.init({
+          border: "thin",
+          corners: "small",
+          colors: {
+            popup: {
+              background: "#edfdfa",
+              text: "#000000",
+              border: "#5ec2b6",
+            },
+            button: { background: "#5ec2b6", text: "#ffffff" },
+          },
+          position: "bottom",
+          padding: "small",
+        });
+      });
+    </script>
   </head>
   <body>
     <nav class="navbar navbar-light bg-light navbar-expand-lg navbar-custom">
