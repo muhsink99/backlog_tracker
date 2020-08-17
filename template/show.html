@@ -49,11 +49,11 @@
                class="btn btn-primary" type="submit" name='show'>Add to backlog</button>
           </form>
         </div>
-        <div class="col-6 col-xs-12">
+        <div class="col-6 col-xs-12" id="show-right">
             <h5> Summary </h5>
             <p>{{ search_result.summary|remove_html_tags }}</p> 
             <div id="accordion">
-                <div class="card">
+                <div class="card" >
                 <div class="card-header" id="episodesHeading">
                 <h5 class="mb-0">
                     <button class="btn btn-link" data-toggle="collapse" data-target="#episodeCollapse" aria-expanded="true" aria-controls="episodeCollapse">
@@ -62,7 +62,7 @@
                 </h5>
                 </div>
 
-                <div id="episodeCollapse" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+                <div id="episodeCollapse"  class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                 <div class="card-body">
                     {% for episode in episodes %}
                         <div class="row episode-row"> 
