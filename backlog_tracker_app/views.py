@@ -134,7 +134,7 @@ def update_account(request):
 
 def backlog(request): 
     shows = ShowBacklog.objects.filter(user=request.user)
-
+    print(shows[0])
     return render(request, 'user/backlog.html', context={'shows': shows})
 
 @login_required
