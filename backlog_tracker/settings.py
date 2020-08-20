@@ -30,7 +30,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ['http://muhsink99.pythonanywhere.com/']
+ALLOWED_HOSTS = ['http://muhsink99.pythonanywhere.com/', '127.0.0.1', 'localhost']
 
 
 # Application definition
